@@ -1,11 +1,11 @@
 # src/main.py
 import schedule
 import time
-from outlook_reader import read_msg_files_with_pdfs
-from vector_store import init_vector_store, search_ground_truth
-from report_generator import generate_report
-from report_logger import save_report
-import numpy as np 
+from .outlook_reader import read_msg_files_with_pdfs
+from .vector_store import init_vector_store, search_ground_truth
+from .report_generator import generate_report
+from .report_logger import save_report
+import numpy as np
 
 
 def load_prompt(path="fraud_detection_prompt.txt"):

@@ -1,8 +1,8 @@
 # src/mcp_pipeline.py
 from fastmcp import MCPApp, tool
-from outlook_reader import read_outlook_emails, read_msg_files
-from vector_store import init_vector_store, search_ground_truth
-from report_generator import generate_report
+from .outlook_reader import read_outlook_emails, read_msg_files
+from .vector_store import init_vector_store, search_ground_truth
+from .report_generator import generate_report
 
 app = MCPApp("fraud-rag-mcp")
 
