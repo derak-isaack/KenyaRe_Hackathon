@@ -19,17 +19,36 @@ class VectorStore:
 
 def init_vector_store():
     """
-    Load ground truth Excel file and build FAISS index.
+    Load ground truth Excel file, filter to marine claims, 
+    and build FAISS index focusing on key fields.
     """
     file_path = r"Claims datasets\CASH CALLS PROCESSED SINCE NOVEMBER 2021 .xlsx"
 
-    df = pd.read_excel(file_path)
+    df = pd.read_excel(file_path, header=3)
+    df.columns = df.columns.str.strip()
+
+    required_cols = [
+        "Responsible Partner Name", 
+        "Amount (Original)", 
+        "Business Title", 
+        "Main Class of Business", 
+        "Claim Name", 
+        "Date of Loss"
+    ]
+    df = df[required_cols].copy()
+    df["Amount (Original)"] = df["Amount (Original)"].abs()
+
+    # df = df[df["Main Class of Business"].str.lower() == "Marine"] & df[[df"Responsible Partner Name"].str.lower() != "GA Insurance Limited"]]
+    df = df[
+    (df["Main Class of Business"].str.lower() == "marine") &
+    (df["Responsible Partner Name"].str.lower() == "ga insurance limited")
+]
+    
 
     texts = df.astype(str).agg(" ".join, axis=1).tolist()
 
     vectors = _model.encode(texts, convert_to_numpy=True)
 
-    # Build FAISS index
     index = faiss.IndexFlatL2(vectors.shape[1])
     index.add(vectors)
 

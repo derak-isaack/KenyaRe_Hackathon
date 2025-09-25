@@ -3,3 +3,14 @@ rag_docs.zip
 haystack_rag/
 .env
 reports/
+templates/
+static/ 
+test.ipynb
+app.py
+cls_test.py
+test_document_classifier.py
+test_enhanced_vector_store.py
+test_outlook_reader_enhanced.py
+
+
+

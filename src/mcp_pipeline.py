@@ -6,8 +6,6 @@ from report_generator import generate_report
 
 app = MCPApp("fraud-rag-mcp")
 
-# ---- MCP TOOLS ----
-
 @tool
 def fetch_emails():
     """Fetch new Outlook emails with PDF attachments."""
