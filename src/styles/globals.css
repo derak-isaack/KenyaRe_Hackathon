@@ -187,3 +187,14 @@
 html {
   font-size: var(--font-size);
 }
+/* If your component has a wrapper class, e.g. .ticket-detail-tabs-wrapper */
+.ticket-detail-tabs-wrapper .your-tabs-list {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+/* Also ensure triggers are not forced block */
+.ticket-detail-tabs-wrapper .your-tabs-list > * {
+  width: auto !important;
+  display: inline-block; /* or whatever suits your triggers */
+}

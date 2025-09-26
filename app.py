@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-"""
-Flask Web Application for Enhanced Fraud Detection System
-"""
-
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
 from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -341,9 +336,8 @@ def api_stats():
 def api_pipeline_status():
     """API endpoint to get pipeline status."""
     try:
-        # Check if pipeline is currently running (in a real app, this would check a job queue)
         pipeline_status = {
-            'is_running': False,  # This would be dynamic in a real implementation
+            'is_running': False,  
             'last_run': datetime.now().isoformat(),
             'reports_processed': len(get_reports_summary()),
             'status': 'idle'

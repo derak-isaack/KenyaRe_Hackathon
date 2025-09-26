@@ -265,201 +265,173 @@ export function TicketDetail({ ticket, onCloseTicket }) {
       </Card>
 
       {/* Analysis & Human Review Tabs */}
-      <Tabs defaultValue="analysis" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="analysis">Analysis Report</TabsTrigger>
-          <TabsTrigger value="comparison">Comparison Metrics</TabsTrigger>
-          <TabsTrigger value="human-review">Human Review</TabsTrigger>
-        </TabsList>
+    <Tabs defaultValue="analysis" className="w-full">
+  <TabsList className="grid grid-cols-1 md:grid-cols-3 w-full">
+    <TabsTrigger className="text-center" value="analysis">
+      Analysis Report
+    </TabsTrigger>
+    <TabsTrigger className="text-center" value="comparison">
+      Comparison Metrics
+    </TabsTrigger>
+    <TabsTrigger className="text-center" value="human-review">
+      Human Review
+    </TabsTrigger>
+  </TabsList>
 
-        <TabsContent value="analysis" className="space-y-4">
-          <ReportViewer ticket={ticket} />
-        </TabsContent>
+  <TabsContent value="analysis" className="space-y-4">
+    <ReportViewer ticket={ticket} />
+  </TabsContent>
 
-        <TabsContent value="comparison" className="space-y-4">
-          <ComparisonMetrics 
-            complianceAnalysis={ticket.compliance_analysis}
-            showDetailed={true}
-          />
-        </TabsContent>
+  <TabsContent value="comparison" className="space-y-4">
+    <ComparisonMetrics
+      complianceAnalysis={ticket.compliance_analysis}
+      showDetailed={true}
+    />
+  </TabsContent>
 
-        <TabsContent value="human-review" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Human Review & Decision</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Review Actions */}
-              <div>
-                <h4 className="font-semibold mb-3">Review Decision</h4>
-                <div className="flex flex-wrap gap-3">
-                  <Button
-                    variant={reviewDecision === 'approve' ? 'default' : 'outline'}
-                    className={reviewDecision === 'approve' ? 'bg-green-600 hover:bg-green-700' : ''}
-                    onClick={() => handleReviewAction('approve')}
-                  >
-                    <ThumbsUp className="h-4 w-4 mr-2" />
-                    Approve Claim
-                  </Button>
-                  <Button
-                    variant={reviewDecision === 'reject' ? 'default' : 'outline'}
-                    className={reviewDecision === 'reject' ? 'bg-red-600 hover:bg-red-700' : ''}
-                    onClick={() => handleReviewAction('reject')}
-                  >
-                    <ThumbsDown className="h-4 w-4 mr-2" />
-                    Reject Claim
-                  </Button>
-                  <Button
-                    variant={reviewDecision === 'reclaim' ? 'default' : 'outline'}
-                    className={reviewDecision === 'reclaim' ? 'bg-blue-600 hover:bg-blue-700' : ''}
-                    onClick={() => handleReviewAction('reclaim')}
-                  >
-                    <RotateCcw className="h-4 w-4 mr-2" />
-                    Mark for Reclaim
-                  </Button>
-                </div>
-                
-                {/* Decision Status */}
-                {reviewDecision && (
-                  <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                    <p className="text-sm font-medium text-blue-800">
-                      Decision Made: {reviewDecision === 'approve' ? 'Claim Approved' : 
-                                     reviewDecision === 'reject' ? 'Claim Rejected' :
-                                     'Marked for Reclaim'}
-                    </p>
-                  </div>
-                )}
-              </div>
+  <TabsContent value="human-review" className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle>Human Review & Decision</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Review Actions */}
+        <div>
+          <h4 className="font-semibold mb-3">Review Decision</h4>
+          <div className="flex flex-wrap gap-3">
+            <Button
+              variant={reviewDecision === 'approve' ? 'default' : 'outline'}
+              className={reviewDecision === 'approve' ? 'bg-green-600 hover:bg-green-700' : ''}
+              onClick={() => handleReviewAction('approve')}
+            >
+              <ThumbsUp className="h-4 w-4 mr-2" />
+              Approve Claim
+            </Button>
+            <Button
+              variant={reviewDecision === 'reject' ? 'default' : 'outline'}
+              className={reviewDecision === 'reject' ? 'bg-red-600 hover:bg-red-700' : ''}
+              onClick={() => handleReviewAction('reject')}
+            >
+              <ThumbsDown className="h-4 w-4 mr-2" />
+              Reject Claim
+            </Button>
+            <Button
+              variant={reviewDecision === 'reclaim' ? 'default' : 'outline'}
+              className={reviewDecision === 'reclaim' ? 'bg-blue-600 hover:bg-blue-700' : ''}
+              onClick={() => handleReviewAction('reclaim')}
+            >
+              <RotateCcw className="h-4 w-4 mr-2" />
+              Mark for Reclaim
+            </Button>
+          </div>
 
-              {/* Review Comments */}
-              <div>
-                <h4 className="font-semibold mb-3">Review Comments</h4>
-                <Textarea
-                  placeholder="Add your review comments, reasoning, and any additional notes..."
-                  value={reviewComment}
-                  onChange={(e) => setReviewComment(e.target.value)}
-                  className="min-h-32"
-                />
-              </div>
-
-              {/* File Upload Section */}
-              <div>
-                <h4 className="font-semibold mb-3">Additional Documentation</h4>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                  <input
-                    type="file"
-                    id="file-upload"
-                    multiple
-                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                    onChange={handleFileUpload}
-                    className="hidden"
-                  />
-                  <label htmlFor="file-upload" className="cursor-pointer">
-                    <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                    <p className="text-sm text-gray-600">
-                      Click to upload additional documents (PDFs, Images, etc.)
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Support for PDF, DOC, DOCX, JPG, PNG files
-                    </p>
-                  </label>
-                </div>
-                
-                {uploadedFiles.length > 0 && (
-                  <div className="mt-4">
-                    <h5 className="font-medium mb-2">Uploaded Files:</h5>
-                    <div className="space-y-2">
-                      {uploadedFiles.map(file => (
-                        <div key={file.id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                          <div className="flex items-center gap-2">
-                            <FileText className="h-4 w-4 text-blue-600" />
-                            <span className="text-sm">{file.name}</span>
-                            <span className="text-xs text-gray-500">
-                              ({(file.size / 1024 / 1024).toFixed(2)} MB)
-                            </span>
-                          </div>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => removeFile(file.id)}
-                          >
-                            <XCircle className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex justify-end gap-3 pt-4 border-t">
-                <Button variant="outline" onClick={handleSaveDraft}>
-                  Save Draft
-                </Button>
-                <Button 
-                  className="bg-gray-600 hover:bg-gray-700"
-                  disabled={!reviewDecision || !reviewComment.trim()}
-                  onClick={handleCloseTicket}
-                >
-                  <XCircle className="h-4 w-4 mr-2" />
-                  Close Ticket
-                </Button>
-              </div>
-
-              {/* Review History */}
-              <div>
-                <h4 className="font-semibold mb-3">Review History</h4>
-                <div className="space-y-3">
-                  <div className="p-3 bg-gray-50 rounded-lg">
-                    <div className="flex justify-between items-start mb-2">
-                      <span className="font-medium">System Analysis</span>
-                      <span className="text-sm text-gray-600">2:00 PM</span>
-                    </div>
-                    <p className="text-sm text-gray-700">
-                      Automated analysis flagged this claim due to multiple risk indicators. 
-                      Requires human review for final decision.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Close Ticket Section */}
           {reviewDecision && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <XCircle className="h-5 w-5" />
-                  Close Ticket
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <p className="text-sm text-gray-600">
-                    Review decision has been made: <span className="font-semibold text-blue-600">
-                      {reviewDecision === 'approve' ? 'Approved' : 
-                       reviewDecision === 'reject' ? 'Rejected' :
-                       'Marked for Reclaim'}
-                    </span>
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Click the button below to close this ticket and remove it from the active queue.
-                  </p>
-                  <Button 
-                    className="bg-gray-600 hover:bg-gray-700"
-                    onClick={handleCloseTicket}
-                  >
-                    <XCircle className="h-4 w-4 mr-2" />
-                    Close Ticket
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <p className="text-sm font-medium text-blue-800">
+                Decision Made: {reviewDecision === 'approve' ? 'Claim Approved' :
+                  reviewDecision === 'reject' ? 'Claim Rejected' :
+                  'Marked for Reclaim'}
+              </p>
+            </div>
           )}
-        </TabsContent>
-      </Tabs>
+        </div>
+
+        {/* Review Comments */}
+        <div>
+          <h4 className="font-semibold mb-3">Review Comments</h4>
+          <Textarea
+            placeholder="Add your review comments, reasoning, and any additional notes..."
+            value={reviewComment}
+            onChange={(e) => setReviewComment(e.target.value)}
+            className="min-h-32"
+          />
+        </div>
+
+        {/* File Upload Section */}
+        <div>
+          <h4 className="font-semibold mb-3">Additional Documentation</h4>
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+            <input
+              type="file"
+              id="file-upload"
+              multiple
+              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            <label htmlFor="file-upload" className="cursor-pointer">
+              <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+              <p className="text-sm text-gray-600">
+                Click to upload additional documents (PDFs, Images, etc.)
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                Support for PDF, DOC, DOCX, JPG, PNG files
+              </p>
+            </label>
+          </div>
+
+          {uploadedFiles.length > 0 && (
+            <div className="mt-4">
+              <h5 className="font-medium mb-2">Uploaded Files:</h5>
+              <div className="space-y-2">
+                {uploadedFiles.map(file => (
+                  <div key={file.id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4 text-blue-600" />
+                      <span className="text-sm">{file.name}</span>
+                      <span className="text-xs text-gray-500">
+                        ({(file.size / 1024 / 1024).toFixed(2)} MB)
+                      </span>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => removeFile(file.id)}
+                    >
+                      <XCircle className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex justify-end gap-3 pt-4 border-t">
+          <Button variant="outline" onClick={handleSaveDraft}>
+            Save Draft
+          </Button>
+          <Button
+            className="bg-gray-600 hover:bg-gray-700"
+            disabled={!reviewDecision || !reviewComment.trim()}
+            onClick={handleCloseTicket}
+          >
+            <XCircle className="h-4 w-4 mr-2" />
+            Close Ticket
+          </Button>
+        </div>
+
+        {/* Review History */}
+        <div>
+          <h4 className="font-semibold mb-3">Review History</h4>
+          <div className="space-y-3">
+            <div className="p-3 bg-gray-50 rounded-lg">
+              <div className="flex justify-between items-start mb-2">
+                <span className="font-medium">System Analysis</span>
+                <span className="text-sm text-gray-600">2:00 PM</span>
+              </div>
+              <p className="text-sm text-gray-700">
+                Automated analysis flagged this claim due to multiple risk indicators.
+                Requires human review for final decision.
+              </p>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </TabsContent>
+</Tabs>
     </div>
   );
 }

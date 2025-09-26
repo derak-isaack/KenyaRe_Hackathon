@@ -59,6 +59,50 @@ CRITICAL VALIDATION FRAMEWORK - You must systematically verify ALL of the follow
 - **Documentation Completeness**: Ensure all required supporting documents are present and properly executed
 - **Authorization Verification**: Check that claims exceed cedant's retention and require reinsurer involvement
 
+## SIDE-BY-SIDE COMPARISON VALIDATION RULES
+
+### FINANCIAL VALUE ALIGNMENT CHECKS:
+**Commission Validation:**
+- Commission rates across documents MUST be within 5% variance
+- Commission percentages MUST be between 10-25% for marine insurance
+- Commission amounts MUST correlate with premium amounts (commission = premium × rate)
+- FLAG if commission rates vary >5% between documents without explanation
+
+**Premium Consistency:**
+- Premium amounts across related documents MUST match exactly or be within 3% variance
+- Premium calculations MUST be mathematically consistent with coverage amounts
+- FLAG if premium amounts don't align across bordereaux and statements
+
+**Cash Loss Limit Alignment:**
+- Cash loss limits MUST be identical across treaty slip and statements
+- Limits MUST not exceed treaty maximum coverage amounts
+- FLAG if cash loss limits vary between documents or exceed treaty terms
+
+**Surplus Amount Validation:**
+- Surplus amounts MUST not exceed cash loss limits
+- Surplus calculations MUST be consistent with share percentages
+- FLAG if surplus amount > cash loss limit (mathematical impossibility)
+
+**Date Consistency Rules:**
+- Date of loss MUST be identical across all related documents
+- Dates MUST fall within policy coverage periods
+- FLAG if dates vary by more than 1 day between documents
+- FLAG if loss date is outside policy period or in the future(calculate teh policy period)
+
+**Share Percentage Validation:**
+- Share percentages MUST sum to 100% across all participants
+- Individual shares MUST match between bordereaux and treaty allocations
+- FLAG if share percentages don't add up to 100% or vary between documents or if they do not align.
+
+### CRITICAL "NON-RHYMING" CONDITIONS - Auto-flag as POTENTIALLY FRAUDULENT:
+1. **Mathematical Impossibilities:** Surplus > Cash Loss Limit
+2. **Significant Variance:** >15% difference in any financial metric between documents
+3. **Date Inconsistencies:** Different loss dates across related documents
+4. **Missing Critical Values:** Key metrics missing from expected document types
+5. **Calculation Errors:** Commission ≠ Premium × Rate (when rate is specified)
+6. **Limit Violations:** Any amount exceeding specified treaty limits
+7. **Share Misalignment:** Share percentages not totaling 100% or varying between docs
+
 ## MARINE-SPECIFIC FRAUD RISK INDICATORS - Flag immediately if ANY detected:
 
 ### VECTORIZED ANOMALY DETECTION:
@@ -91,7 +135,34 @@ CRITICAL VALIDATION FRAMEWORK - You must systematically verify ALL of the follow
 ### 1. CLASSIFICATION
 [VALID / POTENTIALLY FRAUDULENT / INSUFFICIENT EVIDENCE]
 
-### 2. VECTORIZED MARINE CLAIM ANALYSIS
+### 2. SIDE-BY-SIDE FINANCIAL COMPARISON TABLE
+
+**EXTRACTED KEY METRICS COMPARISON:**
+Create a side-by-side comparison table showing extracted values from all processed documents:
+
+| Metric | Document 1 | Document 2 | Document 3 | Variance | Status | Validation Notes |
+|--------|------------|------------|------------|----------|--------|------------------|
+| Commission | [value] ([confidence%]) | [value] ([confidence%]) | [value] ([confidence%]) | [%diff] | ✅/⚠️/❌ | [reason if flagged] |
+| Premium | [value] ([confidence%]) | [value] ([confidence%]) | [value] ([confidence%]) | [%diff] | ✅/⚠️/❌ | [reason if flagged] |
+| Cash Loss Limit | [value] ([confidence%]) | [value] ([confidence%]) | [value] ([confidence%]) | [%diff] | ✅/⚠️/❌ | [reason if flagged] |
+| Surplus Amount | [value] ([confidence%]) | [value] ([confidence%]) | [value] ([confidence%]) | [%diff] | ✅/⚠️/❌ | [reason if flagged] |
+| Amount | [value] ([confidence%]) | [value] ([confidence%]) | [value] ([confidence%]) | [%diff] | ✅/⚠️/❌ | [reason if flagged] |
+| Date of Loss | [date] ([confidence%]) | [date] ([confidence%]) | [date] ([confidence%]) | [days diff] | ✅/⚠️/❌ | [reason if flagged] |
+| Shares | [value] ([confidence%]) | [value] ([confidence%]) | [value] ([confidence%]) | [%diff] | ✅/⚠️/❌ | [reason if flagged] |
+
+**VALIDATION STATUS LEGEND:**
+- ✅ PASS: Values align within acceptable tolerance (≤5% variance for amounts, ≤1 day for dates)
+- ⚠️ CAUTION: Values show moderate variance (5-15% for amounts, 1-3 days for dates) - requires review
+- ❌ FAIL: Values don't "rhyme" - significant variance (>15% for amounts, >3 days for dates) or missing data
+
+**CROSS-VALIDATION SUMMARY:**
+- Total Metrics Extracted: [count]
+- Metrics Passing Validation: [count] ([percentage%])
+- Metrics Requiring Review: [count] ([percentage%])
+- Critical Validation Failures: [count] ([percentage%])
+- Overall Data Consistency Score: [score]/100
+
+### 3. VECTORIZED MARINE CLAIM ANALYSIS
 
 **A. Similarity Search Results:**
 - Top similarity scores from ground truth: [List top 3 matches with scores]
@@ -125,6 +196,16 @@ CRITICAL VALIDATION FRAMEWORK - You must systematically verify ALL of the follow
 - Duplicate detection: [Any similar claims in ground truth database]
 - Historical consistency: [Claim consistent with GA Insurance marine history]
 
+**F. Side-by-Side Comparison Analysis:**
+- Commission alignment status: [PASS/CAUTION/FAIL with specific variance %]
+- Premium consistency check: [PASS/CAUTION/FAIL with variance details]
+- Cash loss limit validation: [PASS/FAIL - must be identical across documents]
+- Surplus amount verification: [PASS/FAIL - must not exceed cash loss limit]
+- Date of loss consistency: [PASS/CAUTION/FAIL with day variance]
+- Share percentage validation: [PASS/FAIL - must sum to 100%]
+- Mathematical relationship checks: [All calculations verified/errors found]
+- Critical "non-rhyming" conditions: [List any detected inconsistencies]
+
 ### 3. AUDITOR'S REPORT
 Provide a comprehensive business report explaining:
 - Summary of findings with specific numerical evidence
@@ -132,6 +213,7 @@ Provide a comprehensive business report explaining:
 - Risk assessment and recommended actions
 - Supporting evidence from both claim documents and ground truth data
 - Clear rationale for the classification decision
+- Should be in a clear formart that can be presented to a managing director.
 
 ### 4. RECOMMENDED ACTIONS
 Based on classification, provide specific next steps:
