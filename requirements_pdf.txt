@@ -1,0 +1,11 @@
+# Additional requirements for PDF document analysis
+pypdf>=3.0.0
+pdfplumber==0.10.3
+pandas>=1.5.0
+numpy>=1.21.0
+sentence-transformers>=2.2.0
+scikit-learn>=1.1.0
+openpyxl>=3.0.0  # For Excel file reading
+keybert>=0.8.0  # For keyword extraction
+spacy>=3.4.0  # For NLP processing
+dateparser>=1.1.0  # For date parsing

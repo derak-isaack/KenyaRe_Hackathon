@@ -1,0 +1,21 @@
+/* Dashboard Styles */
+.risk-high {
+    color: #dc3545 !important;
+}
+
+.risk-medium {
+    color: #ffc107 !important;
+}
+
+.risk-low {
+    color: #28a745 !important;
+}
+
+.card h5 {
+    color: #2c3e50;
+}
+
+.stats .stat h4 {
+    margin: 0;
+    font-size: 1.2rem;
+}
